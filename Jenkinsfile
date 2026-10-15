@@ -25,8 +25,16 @@ pipeline {
 
     post {
         always {
-            archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true
-            archiveArtifacts artifacts: 'allure-results/**', allowEmptyArchive: true
+            // Publish the interactive Allure report
+            allure([
+                results: [[path: 'allure-results']]
+            ])
+
+            // Archive test reports
+            archiveArtifacts(
+                artifacts: 'playwright-report/**,allure-results/**',
+                allowEmptyArchive: true
+            )
         }
     }
 }
